@@ -94,24 +94,36 @@ class Chaser(Module):
 			C(~0b1000111),	# F
 		)
 		glyphs = Array(foo)
-		num = Signal(7) 
+		num = Signal(8) 
+		hd = Signal(1)
+		refresh = Signal(20)
 		select = Signal(1, reset=0)
 		count = Signal(8)
 
 		# this makes a 32 bit counter
 		counter = Signal(32)
 		self.sync += [
+			refresh.eq(refresh + 1),
+			If(refresh == int((sys_clk_freq/120)/2 - 1),
+				refresh.eq(0),
+				hd.eq(~hd),
+				leds.sel.eq(hd),
+				If(hd, digit.eq(glyphs[num[:4]])
+				).Else(digit.eq(glyphs[num[4:]])),
+			),
 			counter.eq(counter + 1),
 			If(counter == int((sys_clk_freq/blink_freq)/2 -1),
 				counter.eq(0),
+				count.eq(count + 1),
 				#
 				# Display a digit on one of the displays
 				#
-				If(num > 15, num.eq(0)
-				).Else(num.eq(num + 1)),
-				digit.eq(glyphs[num]),
-#				Case(num, glyphs),
-				leds.sel.eq(1),
+				num.eq(num+1),
+#				If(num > 15, num.eq(0)
+#				).Else(num.eq(num + 1)),
+#				digit.eq(glyphs[num]),
+##				Case(num, glyphs),
+#				leds.sel.eq(1),
 			)
 		]
 		self.comb += []
