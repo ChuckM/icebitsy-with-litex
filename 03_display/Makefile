@@ -1,7 +1,16 @@
 #
-# build a led chaser design example using Litex/Migen
+# Build a module and a sub-module
 #
-DESIGN=disp1
+#
+# Linux version of the DFU utility
+#
+PROG = dfu-util
+#
+# Windows version of the DFU utility.
+# Use this if you're building this under WSL. 
+#
+#PROG = dfu-util-static.exe
+DESIGN=display
 
 $(DESIGN).bin:	build/top.bin
 	cp $< $@
@@ -10,7 +19,7 @@ build/top.bin: $(DESIGN).py
 	./$(DESIGN).py
 
 flash: $(DESIGN).bin
-	dfu-util-static.exe -d 1d50:6146 -a 0 -R -D $<
+	$(PROG) -d 1d50:6146 -a 0 -R -D $<
 
 clean:
 	rm -rf build $(DESIGN).bin
