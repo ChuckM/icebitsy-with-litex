@@ -9,3 +9,8 @@ easy it is once you have this stuff in modules to put other stuff together.
 In this example we use two instances of the `SevenSegmentLedDisplay` module
 and make our BCD counter 16 bits (for four decimal digits). It is otherwise
 nearly identical to the previous example.
+
+There are also some shennanigans in the `Makefile` which basically create a
+symlink to led7segment.py from its "home" in the pmod directory. Versions of
+pmod modules in the pmod directory are the "canonical" ones and it saves on
+keeping copies in all of the directories up to date.
