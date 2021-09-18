@@ -15,7 +15,7 @@ DESIGN=display
 $(DESIGN).bin:	build/top.bin
 	cp $< $@
 
-build/top.bin: $(DESIGN).py
+build/top.bin: $(DESIGN).py led7segment.py
 	./$(DESIGN).py
 
 flash: $(DESIGN).bin
