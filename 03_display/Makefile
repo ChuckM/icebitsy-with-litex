@@ -22,4 +22,4 @@ flash: $(DESIGN).bin
 	$(PROG) -d 1d50:6146 -a 0 -R -D $<
 
 clean:
-	rm -rf build $(DESIGN).bin
+	rm -rf build $(DESIGN).bin __pycache__
